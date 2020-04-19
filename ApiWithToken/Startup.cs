@@ -37,6 +37,15 @@ namespace ApiWithToken
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            services.AddCors(corsops =>
+            {
+                corsops.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+
+                });
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<ApiWithTokenDBContext>(options => {
                 options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnectionString"]);
@@ -52,6 +61,7 @@ namespace ApiWithToken
             }
 
             app.UseMvc();
+            app.UseCors();
         }
     }
 }
