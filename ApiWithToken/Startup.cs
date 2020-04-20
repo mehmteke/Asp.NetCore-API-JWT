@@ -6,8 +6,10 @@ using ApiWithToken.Domain;
 using ApiWithToken.Domain.Repositories;
 using ApiWithToken.Domain.Service;
 using ApiWithToken.Domain.UnitOfWork;
+using ApiWithToken.Security.Token;
 using ApiWithToken.Service;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +34,8 @@ namespace ApiWithToken
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            TokenOptions tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -45,6 +49,22 @@ namespace ApiWithToken
 
                 });
             });
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(jwtBearerOptions =>
+            {
+
+                jwtBearerOptions.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                     ValidateAudience = true,
+                     ValidateIssuer = true,
+                     ValidateLifetime = true,
+                     //  ValidIssuer = "www.myapi.com"  uzun yol bunu kısa yolda yapalım OOP mantığına uygun olarak.
+                     ValidIssuer = tokenOptions.Issuer,
+                     ValidAudience = tokenOptions.Audience
+                };
+
+            });
+
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<ApiWithTokenDBContext>(options => {
@@ -60,6 +80,7 @@ namespace ApiWithToken
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
             app.UseMvc();
             app.UseCors();
         }
