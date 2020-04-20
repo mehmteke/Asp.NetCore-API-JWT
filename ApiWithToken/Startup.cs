@@ -54,14 +54,15 @@ namespace ApiWithToken
 
                 jwtBearerOptions.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
-                     ValidateAudience = true,
-                     ValidateIssuer = true,
-                     ValidateLifetime = true,
-                     //  ValidIssuer = "www.myapi.com"  uzun yol bunu kısa yolda yapalım OOP mantığına uygun olarak.
-                     ValidIssuer = tokenOptions.Issuer,
-                     ValidAudience = tokenOptions.Audience
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    //  ValidIssuer = "www.myapi.com"  uzun yol bunu kısa yolda yapalım OOP mantığına uygun olarak.
+                    ValidIssuer = tokenOptions.Issuer,
+                    ValidAudience = tokenOptions.Audience,
+                    IssuerSigningKey = SignHandler.GetSecurityKey(tokenOptions.SecurityKey)
                 };
-
             });
 
 
