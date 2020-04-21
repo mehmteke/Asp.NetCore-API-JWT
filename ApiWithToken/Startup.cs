@@ -34,12 +34,16 @@ namespace ApiWithToken
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));  //  uygulamanın her yerinde kullanmak için.
             TokenOptions tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
 
             services.AddCors(corsops =>
             {
