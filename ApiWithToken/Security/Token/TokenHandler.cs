@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using ApiWithToken.Domain;
 using Microsoft.Extensions.Options;
@@ -54,6 +55,20 @@ namespace ApiWithToken.Security.Token
                 new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
             };
             return claims;
+        }
+
+        private string CreateRefreshToken()
+        {
+            var numberByte = new Byte[32];
+
+            using (var mg = RandomNumberGenerator.Create()) 
+            {
+                mg.GetBytes(numberByte);
+                return Convert.ToBase64String(numberByte);
+            }
+
+            //  Yukardaki Karmaşık yapı yerine aşağıdaki gibi de kullanılabilir. Fakat aşağıdaki kullanımın tespit edilmesi daha kolay,
+            //  return Guid.NewGuid().ToString();
         }
 
         public void RevokeRefreshToken(User user)
