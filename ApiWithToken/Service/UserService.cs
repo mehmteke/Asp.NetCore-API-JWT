@@ -90,6 +90,7 @@ namespace ApiWithToken.Service
             try
             {
                 userRepository.RemoveRefreshToken(user);
+                unitOfWork.Complete();
             }
             catch (Exception ex)
             {

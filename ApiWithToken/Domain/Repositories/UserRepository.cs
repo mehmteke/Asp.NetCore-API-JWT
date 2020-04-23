@@ -40,7 +40,8 @@ namespace ApiWithToken.Domain.Repositories
         public void RemoveRefreshToken(User user)
         {
             User userNew = this.FindById(user.Id);
-            userNew.RefreshToken = null; 
+            userNew.RefreshToken = null;
+            userNew.RefreshTokenEndDate = null;
         }
 
         public void SaveRefreshToken(int userId, string refreshToken)

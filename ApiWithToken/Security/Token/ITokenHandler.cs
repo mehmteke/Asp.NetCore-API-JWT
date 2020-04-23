@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ApiWithToken.Security.Token
 {
-    interface ITokenHandler
+    public interface ITokenHandler
     {
         AccessToken CreateAccessToken(User user);
         void RevokeRefreshToken(User user);

@@ -21,7 +21,7 @@ namespace ApiWithToken.Security.Token
 
         public AccessToken CreateAccessToken(User user)
         {
-            var accessTokenExpiration = new DateTime().AddMinutes(1);
+            var accessTokenExpiration =  DateTime.Now.AddMinutes(tokenOptions.AccessTokenExpiration);
             var securityKey = SignHandler.GetSecurityKey(this.tokenOptions.SecurityKey);
             SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
