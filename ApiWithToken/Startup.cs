@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiWithToken.Domain;
 using ApiWithToken.Domain.Repositories;
+using ApiWithToken.Domain.Repositories.Interface;
 using ApiWithToken.Domain.Service;
 using ApiWithToken.Domain.UnitOfWork;
 using ApiWithToken.Security.Token;
@@ -39,7 +40,10 @@ namespace ApiWithToken
             TokenOptions tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

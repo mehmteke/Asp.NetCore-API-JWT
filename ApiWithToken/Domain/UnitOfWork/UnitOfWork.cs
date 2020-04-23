@@ -13,6 +13,12 @@ namespace ApiWithToken.Domain.UnitOfWork
         {
             this.context = context;
         }
+
+        public void Complete()
+        {
+            context.SaveChanges();
+        }
+
         public async Task CompleteAsync()
         {
            await context.SaveChangesAsync();

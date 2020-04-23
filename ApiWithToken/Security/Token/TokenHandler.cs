@@ -18,6 +18,7 @@ namespace ApiWithToken.Security.Token
         {
             this.tokenOptions = options.Value;
         }
+
         public AccessToken CreateAccessToken(User user)
         {
             var accessTokenExpiration = new DateTime().AddMinutes(1);
@@ -40,7 +41,7 @@ namespace ApiWithToken.Security.Token
 
             AccessToken accessToken = new AccessToken();
             accessToken.Expiration = accessTokenExpiration; 
-            accessToken.RefreshToken = null;
+            accessToken.RefreshToken = CreateRefreshToken();
             accessToken.Token = token.ToString();
             return accessToken;
         }
@@ -73,7 +74,7 @@ namespace ApiWithToken.Security.Token
 
         public void RevokeRefreshToken(User user)
         {
-            throw new NotImplementedException();
+            user.RefreshToken = null;
         }
     }
 }

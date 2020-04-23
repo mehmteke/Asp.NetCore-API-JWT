@@ -8,6 +8,7 @@ using ApiWithToken.Domain.Service;
 using ApiWithToken.Extensions;
 using ApiWithToken.Resources;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,7 @@ namespace ApiWithToken.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IProductService productService;
