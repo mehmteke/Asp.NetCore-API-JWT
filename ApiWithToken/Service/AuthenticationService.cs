@@ -29,7 +29,7 @@ namespace ApiWithToken.Service
                 if(userResponse.user.RefreshTokenEndDate > DateTime.Now)
                 {
                     AccessToken accessToken = tokenHandler.CreateAccessToken(userResponse.user);
-                    userService.SaveRefreshToken(userResponse.user.Id, userResponse.user.RefreshToken);
+                    userService.SaveRefreshToken(userResponse.user.Id, accessToken.RefreshToken);
                     return new AccessTokenResponse(accessToken);
                 }
                 else
