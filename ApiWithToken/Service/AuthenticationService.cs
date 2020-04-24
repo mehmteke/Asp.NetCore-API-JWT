@@ -50,7 +50,7 @@ namespace ApiWithToken.Service
             if (userResponse.Success)
             {
                 AccessToken accessToken = tokenHandler.CreateAccessToken(userResponse.user);
-                userService.SaveRefreshToken(userResponse.user.Id, userResponse.user.RefreshToken);
+                userService.SaveRefreshToken(userResponse.user.Id, accessToken.RefreshToken);
                 return new AccessTokenResponse(accessToken);
             }
             else
