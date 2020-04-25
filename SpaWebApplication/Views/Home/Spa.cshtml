@@ -18,7 +18,7 @@
 
                 $.ajax({
                     type: "POST",
-                    crossDomain: false,
+                    crossDomain: true,
                     url: url,
                     data: JSON.stringify(user),
                     success: function (data) {
@@ -33,6 +33,103 @@
 
             });
 
+            function getUserData() {
+                let url = "http://localhost:53987/api/user";
+                let accessToken = localStorage.getItem("token");
+                
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    async: false,
+                    crossDomain: true,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", "Bearer " + accessToken)
+                    },
+                    statusCode: {
+                        401: function () {}
+                    },
+                    success: function (data) {
+                        console.log(data.name);
+                        alert(data.name);
+                      $("#loginDiv").hide();
+                      $("#userDiv").show().html("").append(`
+                      <table class ='table'> 
+                                    <tr>
+                                       <th>Id</th> 
+                                       <th>FirstName</th> 
+                                       <th>LastName</th> 
+                                       <th>Email</th> 
+                                     </tr>
+                                     <tr>
+                                       <th>${data.id}</th> 
+                                       <th>${data.name}</th> 
+                                       <th>${data.surname}</th> 
+                                       <th>${data.email}</th> 
+                                     </tr>
+                      </table>      
+                    `);
+
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    },
+                    contentType: "application/json",
+                    dataType: "json"
+                });
+            }
+
+            function getUserDataRefreshToken() {
+                let refreshToken = localStorage.getItem("refreshToken");
+                var url = "http://localhost:53987/api/login/refreshtoken";
+
+                var data = { "RefreshToken": refreshToken}
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    async: false,
+                    crossDomain: true,
+                    data: JSON.stringify(data),
+                    success: function (data) {
+                        localStorage.setItem("token", data.token);
+                        localStorage.setItem("expiration", data.expiration);
+                        localStorage.setItem("refreshToken", data.refreshToken);
+                    },
+                    error: function (error) {
+                        console.table(error);
+                    },
+                    contentType: "application/json",
+                    dataType: "json"
+                });
+            }
+
+            $("#btnLogin").click(function () {
+                let email = $("#loginEmail").val();
+                let password = $("#loginPassword").val();
+
+                var user = { "Email": email, "Password": password };
+                let url = "http://localhost:53987/api/login/AccessToken";
+
+                $.ajax({
+                    type: "POST",
+                    crossDomain: true,
+                    url: url,
+                    data: JSON.stringify(user),
+                    success: function (data) {
+                        localStorage.setItem("token", data.token);
+                        localStorage.setItem("expiration", data.expiration);
+                        localStorage.setItem("refreshToken", data.refreshToken);
+                        getUserData();
+
+                    },
+                    error: function (error) {
+                        console.table(error);
+                    },
+                    contentType: "application/json",
+                    dataType: "json"
+                });
+
+            });
         });
     </script>
 }
@@ -51,14 +148,39 @@
                          <input type="email" id="email" placeholder="Email" value="Mehmet@Teker" />
                      </div>
                      <div class="form-group">
-                         <input type="password" id="password" placeholder="Password" value="123" />
+                         <input type="text" id="password" placeholder="Password" value="123" />
                      </div>
                      <button type="button" id="btnSave" class="btn-primary">Kaydet</button>
                  </form>
 
              </div>
              <div class="col-md-6">
+                 <div id="userDiv">
+                     <table class="table" style="display:none">
+                         <tr>
+                             <td>Id</td>
+                             <td>Name</td>
+                             <td>Surname</td>
+                             <td>Email</td>
+                             <td>Password</td>
+                         </tr>
+                         <tr>
 
+                         </tr>
+                     </table>
+                 </div>
+                 <div id="loginDiv">
+                     <h2>Üye Giriş</h2>
+                     <form>
+                         <div class="form-group">
+                             <input type="email" class="form-control" id="loginEmail" placeholder="Email Adresiniz" value="Mehmet@Teker" />
+                         </div>
+                         <div class="form-group">
+                             <input type="password" class="form-control" id="loginPassword" placeholder="Şifreniz" value="123" />
+                         </div>
+                         <button type="submit" id="btnLogin" class="btn-success">Giriş</button>
+                     </form>
+                 </div>
              </div>
 
          </div>
