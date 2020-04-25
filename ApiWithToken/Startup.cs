@@ -49,8 +49,6 @@ namespace ApiWithToken
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-
-
             services.AddCors(corsops =>
             {
                 corsops.AddDefaultPolicy(builder =>
@@ -59,6 +57,7 @@ namespace ApiWithToken
 
                 });
             });
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(jwtBearerOptions =>
             {
 
@@ -91,9 +90,10 @@ namespace ApiWithToken
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors();
             app.UseAuthentication();
             app.UseMvc();
-            app.UseCors();
+            
         }
     }
 }
