@@ -39,10 +39,12 @@ namespace ApiWithToken
             services.Configure<TokenOptions>(Configuration.GetSection("TokenOptions"));  //  uygulamanın her yerinde kullanmak için.
             TokenOptions tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ITokenHandler, TokenHandler>();
 

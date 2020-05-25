@@ -34,6 +34,20 @@ namespace ApiWithToken.Service
             } 
         }
 
+        public async Task<ProductListResponse> FindByCategoryIdAsync(int categoryId)
+        {
+            try
+            {
+               IEnumerable<Product> products  = await productRepository.FindByCategoryIdAsync(categoryId);
+                return new ProductListResponse(products);
+            }
+            catch (Exception ex)
+            {
+                return new ProductListResponse("Kategoriye Ait Ürün alınırken hata oluştu: " + ex.Message.ToString());
+                throw;
+            }
+        }
+
         public async Task<ProductResponse> FindByIdAsync(int productId)
         {
             try
@@ -91,9 +105,9 @@ namespace ApiWithToken.Service
                     return new ProductResponse($"Güncelleenecek Ürün Bulunamadı");
                 }
 
-                productOld.Name = product.Name;
-                productOld.Price = product.Price;
-                productOld.Category = product.Category;
+                productOld.ProductName = product.ProductName;
+                productOld.UnitPrice = product.UnitPrice;
+                productOld.CategoryId = product.CategoryId;
                 productRepository.UpdateProduct(productOld);
                 await unitOfWork.CompleteAsync();
 

@@ -28,15 +28,17 @@ namespace ApiWithToken.Controllers
         }
 
         [HttpGet]
-        [Authorize]
-        public IActionResult GetUser()
+        //[Authorize]
+        public IActionResult GetUser(int userId)
         {
-            IEnumerable<Claim> claims = User.Claims;
-            string userId = claims.Where(c => c.Type == ClaimTypes.NameIdentifier).First().Value;
-
-            UserResponse userResponse = userService.FindById(int.Parse(userId));
+            userId = 3;
+            //IEnumerable<Claim> claims = User.Claims;
+            //string userId = claims.Where(c => c.Type == ClaimTypes.NameIdentifier).First().Value;
+            //UserResponse userResponse = userService.FindById(int.Parse(userId));
+            UserResponse userResponse = userService.FindById(userId);
+            
             if (userResponse.Success)
-            {
+            { 
                 return Ok(userResponse.user);
             }
             else

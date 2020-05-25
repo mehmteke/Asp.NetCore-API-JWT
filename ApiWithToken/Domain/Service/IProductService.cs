@@ -12,6 +12,7 @@ namespace ApiWithToken.Domain.Service
         Task<ProductResponse> AddProductAsync(Product product);
         Task<ProductResponse> RemoveProductAsync(int productId);
         Task<ProductResponse> UpdateProduct(Product product,int productId);
-        Task<ProductResponse> FindByIdAsync(int productId); 
+        Task<ProductResponse> FindByIdAsync(int productId);
+        Task<ProductListResponse> FindByCategoryIdAsync(int categoryId);
     }
 }

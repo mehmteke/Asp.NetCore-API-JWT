@@ -4,7 +4,7 @@ Scaffold-DbContext "Data Source=TEKERM;Initial Catalog=ApiWithTokenDB;Integrated
 Microsoft.EntityFrameworkCore.SqlServer 
 -- Path
 -OutputDir Domain
-
+ 
 
 ASP.NET CORE Projesinde Kullanılan Teknolojiler:
 1-) Entity Framework (Database First)

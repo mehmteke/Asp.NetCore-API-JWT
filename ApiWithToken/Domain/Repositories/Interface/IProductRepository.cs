@@ -12,5 +12,6 @@ namespace ApiWithToken.Domain.Repositories
         Task RemoveProductAsync(int productId);
         void UpdateProduct(Product product);
         Task<Product> FindByIdAsync(int productId);
+        Task<IEnumerable<Product>> FindByCategoryIdAsync(int categoryId);
     }
 }

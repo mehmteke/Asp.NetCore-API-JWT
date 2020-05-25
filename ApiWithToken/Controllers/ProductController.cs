@@ -14,9 +14,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ApiWithToken.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ProductController : ControllerBase
     {
         private readonly IProductService productService;
@@ -43,15 +43,33 @@ namespace ApiWithToken.Controllers
             }
         }
 
-        [HttpGet("{id:int}")]
+        //[HttpGet("{categoryId:int}")]
+        [HttpGet]
+        public async Task<IActionResult> FindByCategoryIdAsync(int categoryId)
+        {
+            ProductListResponse productListResponse = await productService.FindByCategoryIdAsync(categoryId);
+            if (productListResponse.Success)
+            {
+                return Ok(productListResponse.Products);
+            }
+            else
+            {
+                return BadRequest(productListResponse.Message);
+            }
+        }
+
+        //[HttpGet("{id:int}")]
+        [HttpGet]
         public async Task<IActionResult> GetFindById(int id)
         {
             ProductResponse productResponse = await productService.FindByIdAsync(id);
 
-            if (productResponse.Success) {
+            if (productResponse.Success)
+            {
                 return Ok(productResponse.product);
             }
-            else {
+            else
+            {
                 return BadRequest(productResponse.Message);
             }
         }
@@ -106,5 +124,5 @@ namespace ApiWithToken.Controllers
             }
         }
 
-    }
+    } 
 }

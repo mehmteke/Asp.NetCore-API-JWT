@@ -15,6 +15,15 @@ namespace ApiWithToken.Domain.Repositories
             await context.Product.AddAsync(product);
         }
 
+        public async Task<IEnumerable<Product>> FindByCategoryIdAsync(int categoryId)
+        {
+            IEnumerable<Product> products;
+            products = await context.Product.ToListAsync();
+            products = (from a in products.Where(product => product.CategoryId == categoryId) select a).ToList();
+
+          return products;
+        }
+
         public async Task<Product> FindByIdAsync(int productId)
         {
             return await context.Product.FindAsync(productId);
